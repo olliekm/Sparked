@@ -1,5 +1,9 @@
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
+import json
+
+load_dotenv()  
 client = OpenAI()
 
 EXTRACTION_PROMPT = """
@@ -35,22 +39,20 @@ Rules:
 5. Infer “strength” vs “cardio” vs “mobility” if type isn’t explicit.
 """
 
-def main():
+def get_prompt_response(prompt: str):
     # prompt for user journal
-    journal = input("Enter your workout journal entry:\n> ")
 
     # call the Chat API
     resp = client.chat.completions.create(
         model="gpt-4o-mini",            # or another model of your choice
         messages=[
             {"role": "system", "content": EXTRACTION_PROMPT},
-            {"role": "user",   "content": journal}
+            {"role": "user",   "content": prompt}
         ]
     )
 
-    # print just the JSON extraction
-    print(resp.choices[0].message.content)
+    return json.loads(resp.choices[0].message.content)
 
 
 if __name__ == "__main__":
-    main()
+    pass
