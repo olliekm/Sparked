@@ -7,7 +7,9 @@ import './global.css';
 
 export default function App() {
   const [journal, setJournal] = useState("")
+  const [loading, setLoading] = useState(false);
   const saveJournal = async () => {
+    setLoading(true)
     try {
       const response = await fetch('http://127.0.0.1:8000/prompt', {
         method: 'POST',
@@ -27,11 +29,19 @@ export default function App() {
     }
 
     setJournal(""); // Clear the input after saving
+    setLoading(false);
   }
   return (
     <>
       <ScreenContent title="Home" path="App.tsx">
+        {
+          loading ? 
+          <View className='w-full h-screen absolute z-20 bg-indigo-900/80 items-center justify-center'>
+            <Text className='text-white text-2xl'>Saving your journal...</Text>
 
+          </View> 
+          : null
+        }
         <TextInput 
             onChangeText={journal => setJournal(journal)} 
             value={journal}
@@ -42,7 +52,7 @@ export default function App() {
             maxLength={1000}
             placeholder='Write your journal here ✏️...'
             ></TextInput>
-          <TouchableOpacity onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-indigo-500 p-2 rounded-lg h-auto w-auto m-10'>
+          <TouchableOpacity disabled={loading} onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-indigo-500 p-2 rounded-lg h-auto w-auto m-10'>
             <Text className='text-gray-100 text-lg px-4'>DONE</Text>
           </TouchableOpacity>
       </ScreenContent>
