@@ -1,0 +1,52 @@
+import { ScreenContent } from 'components/ScreenContent';
+import { StatusBar } from 'expo-status-bar';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+
+import './global.css';
+
+export default function App() {
+  const [journal, setJournal] = useState("")
+  const saveJournal = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/prompt', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          journal: journal,
+        }),
+      });
+      const json = await response.json()
+      console.log("WHAT")
+      console.log(json)
+    } catch (error) {
+      console.error("Error saving journal:", error);
+    }
+
+    setJournal(""); // Clear the input after saving
+  }
+  return (
+    <>
+      <ScreenContent title="Home" path="App.tsx">
+
+        <TextInput 
+            onChangeText={journal => setJournal(journal)} 
+            value={journal}
+            className='text-white text-start text-3xl p-4 h-full placeholder:text-gray-600'
+            editable
+            multiline
+            numberOfLines={30}
+            maxLength={1000}
+            placeholder='Write your journal here ✏️...'
+            ></TextInput>
+          <TouchableOpacity onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-indigo-500 p-2 rounded-lg h-auto w-auto m-10'>
+            <Text className='text-gray-100 text-lg px-4'>DONE</Text>
+          </TouchableOpacity>
+      </ScreenContent>
+      <StatusBar style="auto" />
+    </>
+  );
+}
