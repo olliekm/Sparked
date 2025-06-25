@@ -1,1 +1,24 @@
 backend/.env
+
+# dependencies
+/node_modules
+
+# macOS
+.DS_Store
+
+# Expo
+.expo
+.expo-shared
+
+# build output
+/android
+/ios
+/web-build
+
+# environment
+*.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
