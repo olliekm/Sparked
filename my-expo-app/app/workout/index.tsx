@@ -3,7 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react';
 
-import './global.css';
+
+import '../../global.css';
 
 export default function App() {
   const [journal, setJournal] = useState("")
@@ -33,7 +34,11 @@ export default function App() {
   }
   return (
     <>
-      <ScreenContent title="Home" path="App.tsx">
+      <ScreenContent>
+      <View className='w-full h-auto px-4 flex flex-row items-end justify-between'>
+        <Text className='text-white text-3xl font-bold px-4'>ogi.</Text>
+        <Text className='text-white text-xl px-4'>Your workout journal</Text>
+      </View>
         {
           loading ? 
           <View className='w-full h-screen absolute z-20 bg-indigo-900/80 items-center justify-center'>

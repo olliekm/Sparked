@@ -1,19 +1,19 @@
 backend/.env
 
-# dependencies
-/node_modules
+# # dependencies
+# /node_modules
 
-# macOS
-.DS_Store
+# # macOS
+# .DS_Store
 
-# Expo
-.expo
-.expo-shared
+# # Expo
+# .expo
+# .expo-shared
 
-# build output
-/android
-/ios
-/web-build
+# # build output
+# /android
+# /ios
+# /web-build
 
 # environment
 *.env
