@@ -1,5 +1,6 @@
-![Sparked(2)](https://github.com/user-attachments/assets/20d38474-77e6-4e08-84ad-d069fdd234fe=200x200)
-# AI workout journaling
+<img src="https://github.com/user-attachments/assets/20d38474-77e6-4e08-84ad-d069fdd234fe" alt="Sample Image" width="200" height="200">
+
+## AI workout journaling
 
 ### Features:
 - React native APP
