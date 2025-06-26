@@ -1,4 +1,4 @@
-![Sparked(2)](https://github.com/user-attachments/assets/20d38474-77e6-4e08-84ad-d069fdd234fe)
+![Sparked(2)](https://github.com/user-attachments/assets/20d38474-77e6-4e08-84ad-d069fdd234fe=200x200)
 # AI workout journaling
 
 ### Features:
