@@ -38,7 +38,6 @@ export default function App() {
           loading ? 
           <View className='w-full h-screen absolute z-20 bg-indigo-900/80 items-center justify-center'>
             <Text className='text-white text-2xl'>Saving your journal...</Text>
-
           </View> 
           : null
         }
