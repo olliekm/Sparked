@@ -8,7 +8,7 @@ type ScreenContentProps = {
 
 export const ScreenContent = ({ children }: ScreenContentProps) => {
   return (
-    <View className='bg-gray-800 w-full h-screen text-white pt-20'>
+    <View className='bg-primary w-full h-screen text-secondary pt-20'>
       {children}
     </View>
   );

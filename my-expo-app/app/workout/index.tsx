@@ -36,7 +36,7 @@ export default function App() {
     <>
       <ScreenContent>
       <View className='w-full h-auto px-4 flex flex-row items-end justify-between'>
-        <Text className='text-white text-3xl font-bold px-4'>ogi.</Text>
+        <Text className='text-white text-3xl font-bold px-4'>Sparked.</Text>
         <Text className='text-white text-xl px-4'>Your workout journal</Text>
       </View>
         {
@@ -47,17 +47,18 @@ export default function App() {
           : null
         }
         <TextInput 
+            keyboardAppearance='dark'
             onChangeText={journal => setJournal(journal)} 
             value={journal}
-            className=' text-white text-start text-3xl p-4 h-screen '
+            className='placeholder:text-gray-400  text-white text-start text-3xl p-4 h-screen '
             editable
             multiline
             numberOfLines={30}
             maxLength={1000}
             placeholder='Write your journal here ✏️...'
             ></TextInput>
-          <TouchableOpacity disabled={loading} onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-indigo-500 p-2 rounded-lg h-auto w-auto m-10'>
-            <Text className='text-gray-100 text-lg px-4'>DONE</Text>
+          <TouchableOpacity disabled={loading} onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-accent p-2 rounded-lg h-auto w-auto m-10'>
+            <Text className='text-lg px-4'>DONE</Text>
           </TouchableOpacity>
       </ScreenContent>
       <StatusBar style="auto" />

@@ -14,6 +14,9 @@ export default function index() {
                 <Link href={'/workout'}>
                     workout
                 </Link>
+                <Link href={'/splash'}>
+                    splash
+                </Link>
             </View>
         </ScreenContent>
     </>
