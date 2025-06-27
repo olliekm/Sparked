@@ -41,7 +41,7 @@ export default function App() {
       </View>
         {
           loading ? 
-          <View className='w-full h-screen absolute z-20 bg-indigo-900/80 items-center justify-center'>
+          <View className='w-full h-screen absolute z-10 bg-indigo-900/80 items-center justify-center'>
             <Text className='text-white text-2xl'>Saving your journal...</Text>
           </View> 
           : null
@@ -49,7 +49,7 @@ export default function App() {
         <TextInput 
             onChangeText={journal => setJournal(journal)} 
             value={journal}
-            className='text-white text-start text-3xl p-4 h-full placeholder:text-gray-600'
+            className=' text-white text-start text-3xl p-4 h-screen '
             editable
             multiline
             numberOfLines={30}

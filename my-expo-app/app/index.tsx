@@ -9,7 +9,7 @@ export default function index() {
   return (
     <>
         <ScreenContent>
-            <View className='h-16 w-16 bg-white pt-20'>
+            <View className='pt-20'>
                 <Text className='text-white'>YO</Text>
                 <Link href={'/workout'}>
                     workout
