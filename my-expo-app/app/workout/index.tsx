@@ -2,6 +2,7 @@ import { ScreenContent } from 'components/ScreenContent';
 import { StatusBar } from 'expo-status-bar';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react';
+import { Link } from 'expo-router';
 
 
 import '../../global.css';
@@ -35,9 +36,9 @@ export default function App() {
   return (
     <>
       <ScreenContent>
-      <View className='w-full h-auto px-4 flex flex-row items-end justify-between'>
-        <Text className='text-white text-3xl font-bold px-4'>Sparked.</Text>
-        <Text className='text-white text-xl px-4'>Your workout journal</Text>
+      <View className='w-full h-auto px-4 flex flex-row items-end justify-between text-secondary'>
+        <Text className='text-secondary text-3xl font-bold px-4'>Sparked.</Text>
+        <Text className='text-secondary text-xl px-4'>Your workout journal</Text>
       </View>
         {
           loading ? 
@@ -50,7 +51,7 @@ export default function App() {
             keyboardAppearance='dark'
             onChangeText={journal => setJournal(journal)} 
             value={journal}
-            className='placeholder:text-gray-400  text-white text-start text-3xl p-4 h-screen '
+            className='placeholder:text-gray-400  text-secondary text-start text-3xl p-4 h-screen '
             editable
             multiline
             numberOfLines={30}
@@ -60,6 +61,9 @@ export default function App() {
           <TouchableOpacity disabled={loading} onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-accent p-2 rounded-lg h-auto w-auto m-10'>
             <Text className='text-lg px-4'>DONE</Text>
           </TouchableOpacity>
+          <Link href="/" className='absolute bottom-0 left-0 m-10'>
+          home
+          </Link>
       </ScreenContent>
       <StatusBar style="auto" />
     </>
