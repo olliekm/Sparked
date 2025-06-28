@@ -1,6 +1,7 @@
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import React, { Component } from 'react'
 import { Link } from 'expo-router'
+import Lightning from 'components/LightningWhiteLogo';
 
 const image = {uri: 'https://images.unsplash.com/photo-1600340669742-2d181b86ca73?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHNsYXRlfGVufDB8fDB8fHww'};
 
@@ -9,9 +10,15 @@ export class index extends Component {
     return (
       <ImageBackground source={image} className='h-screen'>
         <View className='h-screen bg-[#000]/80 flex text-secondary'>
+            <View className='absolute left-0 rotate-[30deg]'>
+              <Lightning opacity={0.1} width={1000} height={1000}/>
+            </View>
             <View className='w-full flex justify-center items-center pt-20'>
-            <Text className='font-bold text-secondary text-4xl'>S.</Text>
-            <Text className='mt-2 text-secondary'>Log your climbing with AI</Text>
+              <View className='flex flex-row items-center'>
+                <Text className='text-secondary font-bold text-lg'>Sparked</Text>
+              <Lightning height={16} width={16}/>
+
+              </View>
             </View>
             <View className='absolute bottom-0 w-full p-8 pb-16'>
                 <View className='w-full pb-8'>
