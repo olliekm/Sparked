@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from model import LoginRequest, RegisterRequest
-from utils import get_user_by_email, get_user_by_username
+from utils import get_user_by_email, get_user_by_username, create_user
 from security import verify_password, create_access_token
 
 app = FastAPI()
@@ -28,5 +28,6 @@ async def handle_register(u: RegisterRequest):
             status_code=409,
             detail="Username already taken"
         )
-
+    user = create_user(db, u)
+    # Don't send back token, require them to login with their credentials after
 
