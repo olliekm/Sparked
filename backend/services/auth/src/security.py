@@ -23,3 +23,8 @@ def verify_password(password: str, hashed_password: str) -> bool:
     """ Return true if password is correct
     """
     return bcrypt.verify(password, hashed_password)
+
+def get_password_hash(password: str) -> str:
+    """ Hash the password using bcrypt
+    """
+    return bcrypt.hash(password)
