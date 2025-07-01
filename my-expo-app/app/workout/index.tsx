@@ -1,9 +1,8 @@
 import { ScreenContent } from 'components/ScreenContent';
 import { StatusBar } from 'expo-status-bar';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View, Keyboard, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { Link } from 'expo-router';
-
 
 import '../../global.css';
 
@@ -47,17 +46,24 @@ export default function App() {
           </View> 
           : null
         }
-        <TextInput 
-            keyboardAppearance='dark'
-            onChangeText={journal => setJournal(journal)} 
-            value={journal}
-            className='placeholder:text-gray-400  text-secondary text-start text-3xl p-4 h-screen '
-            editable
-            multiline
-            numberOfLines={30}
-            maxLength={1000}
-            placeholder='Write your journal here ✏️...'
-            ></TextInput>
+
+            <ScrollView style={{flex: 1}} keyboardShouldPersistTaps='handled'>
+            <TextInput 
+                    keyboardAppearance='dark'
+                    onChangeText={journal => setJournal(journal)} 
+                    value={journal}
+                    className='placeholder:text-gray-400  text-secondary text-start text-3xl p-4 h-screen '
+                    editable
+                    multiline
+                    numberOfLines={30}
+                    maxLength={1000}
+                    accessible={false}
+                    onBlur={Keyboard.dismiss}
+                    onEndEditing={Keyboard.dismiss}
+                    placeholder='Write your journal here ✏️...'
+                    ></TextInput>   
+                    </ScrollView>
+
           <TouchableOpacity disabled={loading} onPress={saveJournal} className='absolute z-10 bottom-0 right-0 font-bold bg-accent p-2 rounded-lg h-auto w-auto m-10'>
             <Text className='text-lg px-4'>DONE</Text>
           </TouchableOpacity>
