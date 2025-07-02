@@ -26,10 +26,10 @@ export class index extends Component {
                   <Text className='text-secondary text-center'>Your new favourite climbing log.</Text>
 
                 </View>
-                <Link href="/auth/login" className='p-6 w-full font-bold text-center text-xl bg-accent2 text-primary rounded-full'>
+                <Link href="/auth/register" className='p-6 w-full font-bold text-center text-xl bg-accent2 text-primary rounded-full'>
                   Create new account
                 </Link>
-                <Link href="/auth/register" className='p-6 mt-4 w-full font-bold text-center text-xl underline text-secondary rounded-full'>
+                <Link href="/auth/login" className='p-6 mt-4 w-full font-bold text-center text-xl underline text-secondary rounded-full'>
                   Log into existing account
                 </Link>
             </View>
