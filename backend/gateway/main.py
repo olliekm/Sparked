@@ -8,8 +8,7 @@ from fastapi_limiter.depends import RateLimiter
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 from schemas import LoginRequest, RegisterRequest
-from prometheus_client import Counter, Histogram, make_asgi_app, CollectorRegistry
-import multiprocessing as multiprocess
+from prometheus_client import Counter, Histogram, make_asgi_app, CollectorRegistry, multiprocess
 import httpx
 import jwt
 import os
