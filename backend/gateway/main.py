@@ -14,6 +14,7 @@ import os
 JWT_SECRET = os.getenv("JWT_SECRET")
 AUTH_URL = os.getenv("AUTH_SERVICE_URL")
 PROMPT_URL = os.getenv("PROMPT_SERVICE_URL")
+JOURNAL_URL = os.getenv("JOURNAL_SERVICE_URL")
 REDIS_URL = os.getenv("REDIS_SERVICE_URL")
 
 app = FastAPI()
@@ -85,7 +86,34 @@ async def proxy_prompt(
     # forward to prompting service
     async with httpx.AsyncClient() as client:
         resp = await client.post(
-            "http://prompt-service:8001/prompt",  # Docker service name + port
+            f"{PROMPT_URL}/prompt",  # Docker service name + port
+            json=body,
+            headers={"X-User-ID": str(user_id)},
+            timeout=10.0
+        )
+
+    # pass back whatever the prompting service returned
+    return Response(
+        content=resp.content,
+        status_code=resp.status_code,
+        media_type=resp.headers.get("content-type", "application/json")
+    )
+
+@app.get("/journals")
+async def proxy_journals(
+    request: Request,
+    token_payload: dict = Depends(verify_jwt),
+    dependencies=[Depends(RateLimiter(times=20, seconds=60))]  # Rate limit this endpoint
+):
+    body = await request.json()
+    user_id = token_payload.get("user_id")
+    if not user_id:
+        raise HTTPException(401, "Invalid token payload")
+
+    # forward to prompting service
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(
+            f"{JOURNAL_URL}/journals",  # Docker service name + port
             json=body,
             headers={"X-User-ID": str(user_id)},
             timeout=10.0
