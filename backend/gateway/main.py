@@ -1,11 +1,15 @@
 from typing import Union
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Depends, Response, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from redis.asyncio import Redis
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
+from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 from schemas import LoginRequest, RegisterRequest
+from prometheus_client import Counter, Histogram, make_asgi_app, CollectorRegistry
+import multiprocessing as multiprocess
 import httpx
 import jwt
 import os
@@ -17,13 +21,27 @@ PROMPT_URL = os.getenv("PROMPT_SERVICE_URL")
 JOURNAL_URL = os.getenv("JOURNAL_SERVICE_URL")
 REDIS_URL = os.getenv("REDIS_SERVICE_URL")
 
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    redis_connection = Redis.from_url("redis://localhost:6379", encoding="utf8")
+    await FastAPILimiter.init(redis_connection)
+    yield
+    await FastAPILimiter.close()
+
 app = FastAPI()
+
+# Using multiprocess collector for registry
+def make_metrics_app():
+    registry = CollectorRegistry()
+    multiprocess.MultiProcessCollector(registry)
+    return make_asgi_app(registry=registry)
+
+metrics_app = make_metrics_app()
 security = HTTPBearer()
 
-@app.on_event("startup")
-async def startup():
-    redis = Redis.from_url(REDIS_URL, decode_responses=True)
-    await FastAPILimiter.init(redis)
+app.mount("/metrics", metrics_app)
 
 @app.post("/login")
 async def proxy_login(req: LoginRequest, dependencies=[Depends(RateLimiter(times=5, seconds=60))]):
@@ -60,7 +78,6 @@ async def proxy_login(req: RegisterRequest, dependencies=[Depends(RateLimiter(ti
     )
 
 def verify_jwt(creds: HTTPAuthorizationCredentials = Depends(security)):
-
     token = creds.credentials
     try:
         # decode & verify signature + expiry
