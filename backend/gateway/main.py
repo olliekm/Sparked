@@ -12,6 +12,7 @@ from prometheus_client import Counter, Histogram, make_asgi_app, CollectorRegist
 import httpx
 import jwt
 import os
+import time
 
 
 JWT_SECRET = os.getenv("JWT_SECRET")
@@ -20,7 +21,16 @@ PROMPT_URL = os.getenv("PROMPT_SERVICE_URL")
 JOURNAL_URL = os.getenv("JOURNAL_SERVICE_URL")
 REDIS_URL = os.getenv("REDIS_SERVICE_URL")
 
-
+REQUEST_COUNT = Counter(
+    "http_requests_total",
+    "Total HTTP requests",
+    ["method", "endpoint", "status_code"],
+)
+REQUEST_LATENCY = Histogram(
+    "http_request_duration_seconds",
+    "Histogram of request latency",
+    ["method", "endpoint"],
+)
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -31,6 +41,23 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI()
 
+@app.middleware("http")
+async def metrics_middleware(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    duration = time.time() - start_time
+
+    endpoint = request.url.path
+    method   = request.method
+    status   = response.status_code
+
+    # observe latency
+    REQUEST_LATENCY.labels(method=method, endpoint=endpoint).observe(duration)
+    # increment counter
+    REQUEST_COUNT.labels(method=method, endpoint=endpoint, status_code=status).inc()
+
+    return response
+
 # Using multiprocess collector for registry
 def make_metrics_app():
     registry = CollectorRegistry()
@@ -38,9 +65,9 @@ def make_metrics_app():
     return make_asgi_app(registry=registry)
 
 metrics_app = make_metrics_app()
-security = HTTPBearer()
-
 app.mount("/metrics", metrics_app)
+
+security = HTTPBearer()
 
 @app.post("/login")
 async def proxy_login(req: LoginRequest, dependencies=[Depends(RateLimiter(times=5, seconds=60))]):
