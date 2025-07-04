@@ -2,12 +2,13 @@ from typing import Union
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Depends, Response, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from redis.asyncio import Redis
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
+from fastapi.middleware.cors import CORSMiddleware
+from redis.asyncio import Redis
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
-from schemas import LoginRequest, RegisterRequest
+from backend.gateway.app.schemas import LoginRequest, RegisterRequest
 from prometheus_client import Counter, Histogram, make_asgi_app, CollectorRegistry, multiprocess
 import httpx
 import jwt
@@ -39,7 +40,7 @@ async def lifespan(_: FastAPI):
     yield
     await FastAPILimiter.close()
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 @app.middleware("http")
 async def metrics_middleware(request: Request, call_next):
