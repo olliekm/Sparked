@@ -9,7 +9,7 @@ app = FastAPI()
 
 @app.post('/login')
 async def handle_login(u: LoginRequest, db: As = Depends(get_db)):
-    user = await get_user_by_email(u.email)
+    user = await get_user_by_email(db, u.email)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     if verify_password(u.password, user.password):
